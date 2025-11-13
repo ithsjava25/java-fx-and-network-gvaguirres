@@ -3,17 +3,21 @@ package com.example;
 import io.github.cdimascio.dotenv.Dotenv;
 import tools.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class NtfyConnectionImpl implements NtfyConnection {
 
-    private final HttpClient http  = HttpClient.newHttpClient();
+    private final HttpClient http = HttpClient.newHttpClient();
     private final String hostName;
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -34,7 +38,6 @@ public class NtfyConnectionImpl implements NtfyConnection {
         }
 
         try {
-
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofString(message))
                     .uri(URI.create(hostName + "/mytopic"))
@@ -43,9 +46,9 @@ public class NtfyConnectionImpl implements NtfyConnection {
 
             var response = http.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             return true;
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error sending message");
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             System.out.println("Interrupted sending message");
         }
         return false;
@@ -67,6 +70,33 @@ public class NtfyConnectionImpl implements NtfyConnection {
                         .peek(System.out::println)
                         .forEach(messageHandler));
 
+    }
+
+    @Override
+    public CompletableFuture<HttpResponse<String>> sendImage(File file) {
+        if (file == null || !file.exists()) {
+            return CompletableFuture.failedFuture(
+                    new IllegalArgumentException("File does not exist")
+            );
+        }
+
+        try {
+            Path filePath = file.toPath();
+            String fileName = file.getName();
+            String contentType = Files.probeContentType(filePath);
+
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .POST(HttpRequest.BodyPublishers.ofFile(filePath))
+                    .uri(URI.create(hostName + "/mytopic"))
+                    .header("Content-Type", contentType)
+                    .header("X-Filename", fileName)
+                    .build();
+
+            return http.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+            return CompletableFuture.failedFuture(e);
+        }
     }
 }
 

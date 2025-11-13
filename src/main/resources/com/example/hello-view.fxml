@@ -6,28 +6,25 @@
 <AnchorPane xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.HelloController"
-            prefHeight="400.0" prefWidth="400.0"
+            prefHeight="600.0" prefWidth="600.0"
             stylesheets="@style.css">
 
-    <VBox layoutX="10.0" layoutY="10.0" prefWidth="400.0" spacing="10"
-          AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="10.0">
+    <VBox layoutX="10.0" layoutY="10.0" prefWidth="500.0" spacing="10"
+          AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" AnchorPane.bottomAnchor="50.0"
+            alignment="TOP_CENTER">
 
-        <Label text="Chat Area" />
+        <Label text="Chat Java"/>
 
         <ListView fx:id="messageView"
-                  prefHeight="300.0" VBox.vgrow="ALWAYS"/>
+                  prefHeight="450.0" VBox.vgrow="ALWAYS"/>
 
-        <HBox spacing="10" prefHeight="60.0">
+        <StackPane>
             <TextArea fx:id="messageField" promptText="Enter your message" wrapText="true"
-                      prefHeight="60.0" maxWidth="350.0"
-                      HBox.hgrow="ALWAYS"/>
-            <Button fx:id="sendButton" text="Send" prefHeight="20.0" prefWidth="60.0"
+                      prefHeight="60.0" maxWidth="1000.0" StackPane.alignment="CENTER_LEFT"/>
+            <Button fx:id="sendButton" text="Send" StackPane.alignment="CENTER_RIGHT"
                     onAction="#sendMessage" />
-        </HBox>
-
-
-
-
+            <Button fx:id="attachButton" text="Attach" onAction="#handleAttachFile"/>
+        </StackPane>
     </VBox>
 </AnchorPane>
 

@@ -19,13 +19,10 @@ class HelloModelTest {
     @Test
     @DisplayName("Given a model with messageToSend when calling sendMessage then send assert")
     void sendMessageCallsConnectionWithMessageToSend(){
-        //Arrange Given något objekt
         var spy = new NtfyConnectionSpy();
-        var model = new HelloModel(spy); //implementation av interfaces
+        var model = new HelloModel(spy);
         model.setMessageToSend("Hello World");
-        //Act When send message
         model.sendMessage();
-        //Assert Then
         assertThat(spy.message).isEqualTo("Hello World");
     }
 
@@ -38,7 +35,6 @@ class HelloModelTest {
 
         model.sendMessage();
 
-        //Verify call made to server
         verify(postRequestedFor(urlEqualTo("/mytopic"))
                 .withRequestBody(containing("Hello World")));
 
