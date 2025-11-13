@@ -2,41 +2,43 @@ package com.example;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 /**
  * Controller layer: mediates between the view (FXML) and the model.
  */
 public class HelloController {
 
-    private final HelloModel model = new HelloModel();
+    private final HelloModel model = new HelloModel(new NtfyConnectionImpl());
+    public ListView<NtfyMessageDto> messageView;
 
     @FXML
-    private TextArea chatArea;
+    public TextArea chatArea;
+
     @FXML
-    private TextField messageField;
+    private TextArea messageField;
     @FXML
     private Button sendButton;
 
     @FXML
-    public AnchorPane rootPane;
-
-    @FXML
     private void initialize() {
+        messageView.setItems(model.getMessages());
+        messageField.textProperty().bindBidirectional(model.messageToSendProperty());
 
+        messageView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(NtfyMessageDto item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.message());
+            }
+        });
     }
 
-
-    public void onSendButtonClicked(ActionEvent actionEvent) {
-        String message = messageField.getText().trim();
-        if (!message.isEmpty()) {
-            chatArea.appendText("You: " + message + "\n");
-            messageField.clear();
-        }
-        //regNumberField.setStyle("-fx-border-color: red;");
+    public void sendMessage(ActionEvent actionEvent) {
+        model.sendMessage();
     }
 }

@@ -1,0 +1,42 @@
+.root {
+    -fx-background-image: url("background.JPG");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-border-radius: 10;
+    -fx-font-family: "Comic Sans MS";
+}
+.label {
+    -fx-font-size: 14px;
+}
+.text-area {
+    -fx-font-size: 14px;
+    -fx-background-color: beige;
+    -fx-border-color: rgba(246, 130, 255, 0.68);
+    -fx-border-width: 2px;
+    -fx-border-radius: 5;
+    -fx-background-radius: 10;
+    -fx-focus-color: beige;
+    -fx-faint-focus-color: beige;
+}
+.text-field {
+    -fx-font-size: 12px;
+    -fx-background-color: beige;
+    -fx-border-color: rgba(246, 130, 255, 0.68);
+    -fx-border-width: 2px;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-focus-color: beige;
+    -fx-faint-focus-color: beige;
+}
+.button {
+    -fx-font-size: 12px;
+    -fx-background-color: beige;
+    -fx-border-color: rgba(246, 130, 255, 0.68);
+    -fx-border-width: 2px;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+
+
