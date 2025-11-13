@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.File;
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -25,8 +26,7 @@ public class NtfyConnectionSpy implements  NtfyConnection {
 
     @Override
     public CompletableFuture<HttpResponse<String>> sendImage(File file) {
-        this.file = file;
-        return
+        CompletableFuture<HttpResponse<String>> response = new CompletableFuture<>();
+        return response;
     }
-
 }
