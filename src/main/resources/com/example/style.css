@@ -1,0 +1,103 @@
+.root {
+    -fx-dark-red: #ff0038;
+    -fx-light-pink: #ffabdb;
+    -fx-off-white: #F9F9F9;
+    -fx-clean-white: #FFFFFF;
+    -fx-dark-text: #505050;
+    -fx-shadow-color: rgba(0, 0, 0, 0.15);
+    -fx-font-family: "Arial", "Verdana", "Sans-serif";
+    -fx-font-size: 14px;
+    -fx-background-color: -fx-light-pink;
+}
+.anchor-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 20px;
+}
+.vbox {
+    -fx-background-color: -fx-off-white;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-padding: 18px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 15, 0.4, 3, 3);
+}
+#messageView {
+    -fx-background-color: #fdfdef;
+    -fx-border-color: -fx-dark-red;
+    -fx-border-width: 5px;
+    -fx-border-radius: 4px;
+    -fx-background-radius:10;
+    -fx-padding: 5px 10px;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0.0, 1, 1);
+}
+#messageField {
+    -fx-background-color: #fdfdef;
+    -fx-text-fill: -fx-dark-text;
+    -fx-border-color: -fx-dark-red;
+    -fx-border-width: 5px;
+    -fx-border-radius: 2px;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.0, 1, 1);
+    -fx-padding: 10px 60px 10px 15px;
+}
+#sendButton {
+    -fx-min-width: 50px;
+    -fx-pref-height: 30px;
+    -fx-background-color: -fx-dark-red;
+    -fx-text-fill: -fx-dark-text;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 15px;
+    -fx-padding: 5px 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0.0, 0, 2);
+    -fx-translate-x: -8px;
+}
+#sendButton:hover {
+    -fx-background-color: -fx-light-pink;
+}
+#sendButton:pressed {
+    -fx-background-color: -fx-dark-red;
+    -fx-padding: 9px 15px 7px 15px;
+}
+#attachButton {
+    -fx-min-width: 20px;
+    -fx-pref-height: 20px;
+    -fx-background-color: -fx-dark-red;
+    -fx-text-fill: -fx-dark-text;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 15px;
+    -fx-padding: 5px 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0.0, 0, 2);
+    -fx-translate-x: 170px;
+}
+#attachButton:hover {
+    -fx-background-color: -fx-light-pink;
+}
+#attachButton:pressed {
+    -fx-background-color: -fx-dark-red;
+    -fx-padding: 9px 15px 7px 15px;
+}
+.send-button-overlay {
+    -fx-padding: 5px 10px;
+    -fx-margin: 0;
+}
+.label {
+    -fx-text-fill: -fx-dark-text;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 0 0 5px 0;
+}
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+}
+.list-cell .label {
+    -fx-background-color: -fx-light-pink;
+    -fx-text-fill: -fx-dark-text;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+}
+
+
+
+
