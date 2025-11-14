@@ -1,7 +1,8 @@
 package com.example;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,13 +64,17 @@ public class NtfyConnectionImpl implements NtfyConnection {
                 .build();
 
         http.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofLines())
-                .thenAccept(response -> response.body()
-                        .map(s ->
-                                mapper.readValue(s, NtfyMessageDto.class))
-                        .filter(message -> message.event().equals("message"))
-                        .peek(System.out::println)
-                        .forEach(messageHandler));
-
+                .thenAccept(response -> response.body().forEach(line -> {
+                    try {
+                        var message = mapper.readValue(line, NtfyMessageDto.class);
+                        if ("message".equals(message.event())) {
+                            System.out.println(message);
+                            messageHandler.accept(message);
+                        }
+                    }catch (JsonProcessingException e) {
+                        System.out.println("Failed to parse message: " + e.getMessage());
+                    }
+                }));
     }
 
     @Override
@@ -84,6 +89,9 @@ public class NtfyConnectionImpl implements NtfyConnection {
             Path filePath = file.toPath();
             String fileName = file.getName();
             String contentType = Files.probeContentType(filePath);
+            if (contentType == null || contentType.isBlank()) {
+                contentType = "application/octet-stream";
+            }
 
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofFile(filePath))

@@ -32,6 +32,7 @@ public class HelloController {
 
     @FXML
     private void initialize() {
+        model.initialize();
         messageView.setItems(model.getMessages());
         messageField.textProperty().bindBidirectional(model.messageToSendProperty());
 

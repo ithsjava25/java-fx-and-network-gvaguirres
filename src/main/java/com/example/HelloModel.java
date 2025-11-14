@@ -13,15 +13,19 @@ public class HelloModel {
     private final ObservableList<NtfyMessageDto> messages = FXCollections.observableArrayList();
     private final NtfyConnection connection;
     private final StringProperty messageToSend = new SimpleStringProperty();
+    private final ObservableList<NtfyMessageDto> unmodifiableMessages = FXCollections.unmodifiableObservableList(messages);
 
 
     public HelloModel(NtfyConnection connection) {
         this.connection = connection;
+    }
+    
+    public void initialize() {
         receiveMessage();
     }
 
     public ObservableList<NtfyMessageDto> getMessages() {
-        return messages;
+        return unmodifiableMessages;
     }
 
     public String getMessageToSend() {
@@ -37,14 +41,22 @@ public class HelloModel {
     }
 
     public void sendMessage(){
-        connection.send(messageToSend.get());
-        messageToSend.set("");
+        String message = messageToSend.get();
+        if (message == null || message.trim().isEmpty()) {
+            return;
+        }
+        try {
+            connection.send(message);
+            messageToSend.set("");
+            } catch (Exception e) {
+                System.out.println("Error while sending message");
+            }
     }
 
     public void receiveMessage(){
         connection.receive(m -> RunOnFx.runOnFx(() -> messages.add(m)));
     }
-
 }
+
 
 
