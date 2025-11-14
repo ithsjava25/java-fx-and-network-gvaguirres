@@ -46,7 +46,7 @@ public class NtfyConnectionImpl implements NtfyConnection {
                     .build();
 
             var response = http.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            return true;
+            return response.statusCode() >= 200 && response.statusCode() < 300;
         } catch (IOException e) {
             System.out.println("Error sending message");
         } catch (InterruptedException e) {

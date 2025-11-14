@@ -17,10 +17,11 @@ import java.io.File;
  */
 public class HelloController {
 
-    private final HelloModel model = new HelloModel(new NtfyConnectionImpl());
-    public ListView<NtfyMessageDto> messageView;
     private final NtfyConnection ntfyConnection = new NtfyConnectionImpl();
+    private final HelloModel model = new HelloModel(ntfyConnection);
 
+    @FXML
+    public ListView<NtfyMessageDto> messageView;
     @FXML
     public TextArea chatArea;
     @FXML
@@ -64,6 +65,17 @@ public class HelloController {
         }
     }
     private void  handleSendFile(File file) {
-        ntfyConnection.sendImage(file);
+        ntfyConnection.sendImage(file)
+                .thenAccept(response -> {
+                    if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                        System.out.println("File sent successfully: " + file.getName());
+                    } else {
+                        System.out.println("Failed to send file: " + response.statusCode());
+                    }
+                })
+                .exceptionally(e -> {
+                    System.out.println("Error sending file: " + e.getMessage());
+                    return null;
+                });
     }
 }

@@ -45,6 +45,8 @@ class HelloModelTest {
         var con = new  NtfyConnectionSpy();
         var model = new HelloModel(con);
 
+        model.initialize();
+
         assertThat(model.getMessages())
                 .hasSize(1);
     }
