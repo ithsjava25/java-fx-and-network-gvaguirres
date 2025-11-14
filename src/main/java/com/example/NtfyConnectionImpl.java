@@ -21,15 +21,31 @@ public class NtfyConnectionImpl implements NtfyConnection {
     private final String hostName;
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Constructs an NtfyConnectionImpl and initializes the connection host from the `HOST_NAME` environment variable.
+     *
+     * @throws NullPointerException if the `HOST_NAME` environment variable is not set
+     */
     public NtfyConnectionImpl() {
         Dotenv dotenv = Dotenv.load();
         hostName = Objects.requireNonNull(dotenv.get("HOST_NAME"));
     }
 
+    /**
+     * Create a connection that will send and receive messages via the specified ntfy host.
+     *
+     * @param hostName the base URL of the ntfy server (for example "https://ntfy.example.com"); this value is stored and later used to build topic endpoints
+     */
     public NtfyConnectionImpl(String hostName) {
         this.hostName = hostName;
     }
 
+    /**
+     * Send the given JSON message to the configured host's /mytopic endpoint.
+     *
+     * @param message the JSON message to send; must be non-null and not empty after trimming
+     * @return `true` if the message was sent successfully, `false` otherwise
+     */
     @Override
     public boolean send(String message) {
 
@@ -54,6 +70,14 @@ public class NtfyConnectionImpl implements NtfyConnection {
         return false;
     }
 
+    /**
+     * Starts streaming messages from the configured topic and delivers each received message event to the provided handler.
+     *
+     * <p>Each line of the server response is parsed as an {@code NtfyMessageDto}; entries with an {@code event} equal to
+     * {@code "message"} are printed to standard output and forwarded to {@code messageHandler}.</p>
+     *
+     * @param messageHandler consumer invoked for each parsed {@code NtfyMessageDto} whose {@code event} equals {@code "message"}
+     */
     @Override
     public void receive(Consumer<NtfyMessageDto> messageHandler) {
 
@@ -72,6 +96,12 @@ public class NtfyConnectionImpl implements NtfyConnection {
 
     }
 
+    /**
+     * Uploads the given file to the configured host's "/mytopic" endpoint as the request body.
+     *
+     * @param file the file to upload; must exist
+     * @return a CompletableFuture that completes with the HTTP response whose body is a String. The future completes exceptionally with an IllegalArgumentException if the file is null or does not exist, or with an IOException if reading the file fails.
+     */
     @Override
     public CompletableFuture<HttpResponse<String>> sendImage(File file) {
         if (file == null || !file.exists()) {
@@ -99,4 +129,3 @@ public class NtfyConnectionImpl implements NtfyConnection {
         }
     }
 }
-
