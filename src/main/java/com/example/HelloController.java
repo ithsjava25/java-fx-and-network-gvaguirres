@@ -30,6 +30,13 @@ public class HelloController {
     @FXML
     private Button attachButton;
 
+    /**
+     * Initializes UI bindings and the cell renderer for the messages view.
+     *
+     * Binds the message list view to the model's observable messages, binds the message input field
+     * bidirectionally to the model's message-to-send property, and configures the list view to
+     * display each NtfyMessageDto by its message() text.
+     */
     @FXML
     private void initialize() {
         messageView.setItems(model.getMessages());
@@ -44,10 +51,19 @@ public class HelloController {
         });
     }
 
+    /**
+     * Sends the message currently composed in the UI.
+     *
+     * @param actionEvent the ActionEvent that triggered this handler
+     */
     public void sendMessage(ActionEvent actionEvent) {
         model.sendMessage();
     }
 
+    /**
+     * Opens a file chooser (images, documents, or all files) and, if the user selects a file,
+     * initiates sending of the selected file.
+     */
     public void handleAttachFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
@@ -62,6 +78,11 @@ public class HelloController {
             handleSendFile(file);
         }
     }
+    /**
+     * Sends the given file through the configured ntfy connection.
+     *
+     * @param file the file to send (e.g., an image or document) 
+     */
     private void  handleSendFile(File file) {
         ntfyConnection.sendImage(file);
     }
